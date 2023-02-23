@@ -1,0 +1,4 @@
+data/*
+pipeline/*
+src/.ipynb_checkpoints/*
+.vscode/*
