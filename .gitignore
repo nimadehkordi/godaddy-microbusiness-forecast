@@ -1,4 +1,4 @@
 data/*
 pipeline/*
-src/.ipynb_checkpoints/*
 .vscode/*
+notebooks/.ipynb_checkpoints/*

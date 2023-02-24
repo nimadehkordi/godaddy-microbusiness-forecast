@@ -48,6 +48,36 @@ The objective of this competition is to predict the density of microbusinesses i
 
 ## Code Structure
 
+```
+├── README.md
+├── environment.yml
+├── data
+│   ├── sample_submission.csv
+│   ├── test.csv
+│   └── train.csv
+├── notebooks
+│   ├── eda.ipynb
+├── src
+│   ├── __init__.py
+│   ├── data
+│   │   ├── __init__.py
+│   │   ├── make_dataset.py
+│   │   └── preprocess.py
+│   ├── features
+│   │   ├── __init__.py
+│   │   └── build_features.py
+│   ├── models
+│   │   ├── __init__.py
+│   │   ├── model.py
+│   │   ├── predict_model.py
+│   │   └── train_model.py
+│   └── visualization
+│       ├── __init__.py
+│       └── visualize.py
+└── tests
+    ├── __init__.py
+    └── test_make_dataset.py
+```
 
 ## Results
 
