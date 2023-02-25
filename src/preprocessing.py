@@ -36,31 +36,31 @@ pp = pprint.PrettyPrinter()
 FEATURES_TO_REMOVE = ["row_id", "first_day_of_month"]
 FEATURES_CENSUS = ['pct_bb', 'pct_college', 'pct_foreign_born', 'pct_it_workers', 'median_hh_inc']
 
-def _pivot_census(census_df, category):
-    """This function prepares and melts the census dataframe"""
-    
-    df_cols = [col for col in census_df.columns if category in col]  # select relevant columns
-    df = census_df[df_cols+['cfips']] # subset the dataframe
-    # renaming columns
-    df_cols = [col[-4:] for col in df.drop('cfips', axis=1).columns]
-    df.columns = df_cols+['cfips']
-    # melting a dataframe
-    df = pd.melt(df, id_vars='cfips', value_vars=['2017','2018','2019','2020','2021'],
-                    var_name='year', value_name=category).sort_values('cfips').reset_index(drop=True)
-    return df
-
 def _pivot_census_all(census_df):
-    for category in FEATURES_CENSUS:
-        df = _pivot_census(census_df, category)
+    """This function prepares and melts the census dataframe"""
+    outputs = census_df
+    
+    for category in FEATURES_CENSUS:           
+        df_cols = [col for col in census_df.columns if category in col]  # select relevant columns
+        df = census_df[df_cols+['cfips']] # subset the dataframe
+        # renaming columns
+        df_cols = [col[-4:] for col in df.drop('cfips', axis=1).columns]
+        df.columns = df_cols+['cfips']
+        # melting a dataframe
+        df = pd.melt(df, id_vars='cfips', value_vars=['2017','2018','2019','2020','2021'],
+                        var_name='year', value_name=category).sort_values('cfips').reset_index(drop=True)
         if category == FEATURES_CENSUS[0]:
-            census_df = df
+            outputs = df
         else:
-            census_df = pd.merge(census_df, df, on=['cfips','year'])
-    census_df.sort_values(['cfips','year'], inplace=True)
-    census_df['year'] = census_df['year'].astype('int')
-    return census_df
+            outputs = pd.merge(outputs, df, on=['cfips','year'])
+    
+    outputs.sort_values(['cfips','year'], inplace=True)
+    outputs['year'] = outputs['year'].astype('int')
+    
+    return outputs
+        
 
-def preprocessing_fn(inputs, training=True, census_df=None):
+def preprocessing_fn(inputs, census_df=None):
     """Preprocess input columns into transformed columns."""
 
     outputs = inputs.copy()
